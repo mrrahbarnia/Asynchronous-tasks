@@ -12,9 +12,16 @@ app = Celery('dcelery')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Routing the tasks to a specific worker
-app.conf.task_routes = {
-    'newapp.tasks.*': {'queue':'queue1'},
-    'newapp.tasks.task2': {'queue':'queue2'}
+# app.conf.task_routes = {
+#     'newapp.tasks.*': {'queue':'queue1'},
+#     'newapp.tasks.task2': {'queue':'queue2'}
+# }
+app.conf.task_default_rate_limit = '1/m'
+
+app.conf.broker_transport_options = {
+    'priority_steps': list(range(10)),
+    'sep': ':',
+    'queue_order_strategy': 'priority'
 }
 
 app.autodiscover_tasks()
