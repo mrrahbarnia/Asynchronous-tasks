@@ -28,10 +28,23 @@ services:
       context: dcelery
     volumes:
       - ./dcelery:/usr/src/app/
-    command: celery -A dcelery worker -l INFO
+    command: celery -A dcelery worker -l INFO -Q queue1
     environment:
       - DEBUG=1
       - SECRET_KEY='django-insecure-2f%q0x^f+uk@$$hku$%9hkxk%pyx#k4n%ci_p^d)f6x1%b_&(^'
       - ALLOWED_HOSTS=localhost,127.0.0.1
     depends_on:
       - redis
+      - django
+
+  celery2:
+    container_name: celery2
+    build:
+      context: ./celeryworker
+      dockerfile: Dockerfile
+    command: celery -A celerytask worker -l INFO -Q queue2
+    volumes:
+      - ./celeryworker:/usr/src/app/
+    depends_on:
+      - redis
+      - django
