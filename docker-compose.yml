@@ -35,7 +35,7 @@ services:
       context: dcelery
     volumes:
       - ./dcelery:/usr/src/app/
-    command: celery -A dcelery worker -l INFO -Q tasks
+    command: celery -A dcelery worker --hostname=celeryworker1@%h -l INFO -Q tasks,dead_letter -E
     environment:
       - DEBUG=1
       - SECRET_KEY='django-insecure-2f%q0x^f+uk@$$hku$%9hkxk%pyx#k4n%ci_p^d)f6x1%b_&(^'
@@ -44,6 +44,17 @@ services:
       - redis
       - django
       - rabbitmq
+    
+  flower:
+    container_name: flower
+    image: mher/flower:latest
+    ports:
+      - 5555:5555
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      - rabbitmq
+      - celery
 
   # celery2:
   #   container_name: celery2
