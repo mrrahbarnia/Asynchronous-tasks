@@ -2,7 +2,6 @@
 Tasks for celery processing.
 """
 # import time
-
 from celery import shared_task
 
 from django.core.management import call_command
@@ -10,8 +9,6 @@ from django.core.management import call_command
 @shared_task(queue='tasks')
 def task1():
     call_command('migrate_scheduling')
-
-
 
 
 # @shared_task
