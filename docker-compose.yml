@@ -35,7 +35,7 @@ services:
       context: dcelery
     volumes:
       - ./dcelery:/usr/src/app/
-    command: celery -A dcelery worker --hostname=celeryworker1@%h -l INFO -Q tasks,dead_letter -E
+    command: celery -A dcelery worker --hostname=celeryworker1@%h -l INFO -Q tasks,dead_letter -E -B
     environment:
       - DEBUG=1
       - SECRET_KEY='django-insecure-2f%q0x^f+uk@$$hku$%9hkxk%pyx#k4n%ci_p^d)f6x1%b_&(^'

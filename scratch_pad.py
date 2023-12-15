@@ -40,4 +40,3 @@ result.ready()
 
 
 docker container exec -it django /bin/ash
-from dcelery.celery_tasks.ex10_error_tracking_and_monitoring_with_sentry import divide_numbers
